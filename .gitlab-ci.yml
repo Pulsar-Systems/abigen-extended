@@ -1,0 +1,45 @@
+image: node:14-alpine
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+stages:
+  - test
+  - pages
+  - deploy
+
+cache:
+  key: cache-node-modules
+  paths:
+    - node_modules/
+
+test:
+  stage: test
+  script:
+    - yarn install
+    - yarn bundle
+    - yarn eslint # - yarn test # There is no tests for now
+  artifacts:
+    untracked: true
+
+pages:
+  stage: pages
+  dependencies:
+    - test
+  script:
+    - yarn doc
+    - cp -a docs public
+  artifacts:
+    paths:
+      - public
+
+bundle:
+  stage: deploy
+  dependencies:
+    - test
+  script:
+    - cd dist
+    - npm config set @${CI_PROJECT_ROOT_NAMESPACE}:registry https://gitlab.com/api/v4/projects/${CI_PROJECT_ID}/packages/npm/
+    - echo "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}" > .npmrc
+    - npm publish

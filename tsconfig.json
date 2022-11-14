@@ -1,0 +1,23 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"declaration": true,
+		"removeComments": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"allowSyntheticDefaultImports": true,
+		"resolveJsonModule": true,
+		"esModuleInterop": true,
+		"target": "es2018",
+		"lib": ["es2019"],
+		"sourceMap": true,
+		"inlineSources": true,
+		"sourceRoot": "/",
+		"outDir": "./dist",
+		"baseUrl": "./",
+		"incremental": true,
+		"skipLibCheck": true
+	},
+	"include": ["./src"],
+	"exclude": ["node_modules", "**/*.spec.ts"]
+}
