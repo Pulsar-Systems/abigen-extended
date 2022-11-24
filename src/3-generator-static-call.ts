@@ -71,10 +71,6 @@ const mapSolidityToGoType = (fragment: JsonFragmentType, useStructName: boolean)
 export const generatorStaticCall = (fileContent: string, goinfo: GolangInfo) => {
 	const lines: string[] = [];
 
-	// type = function
-	// stateMutability != view
-	// stateMutability == payable
-
 	// 1. List events and create const
 	const methods: Method[] = [];
 	for (const frag of goinfo.abi) {
@@ -89,7 +85,6 @@ export const generatorStaticCall = (fileContent: string, goinfo: GolangInfo) => 
 			});
 		}
 	}
-	lines.push('');
 
 	// 2. Create functions for parsing receipt
 	for (const method of methods) {
@@ -137,9 +132,9 @@ export const generatorStaticCall = (fileContent: string, goinfo: GolangInfo) => 
 			`		return ${defaultReturn}`,
 			`	}`,
 			'',
-			`	${
-				outputTarget !== 'none' ? 'data' : '_'
-			}, err := contract.Backend.CallContract(context.Background(), ethereum.CallMsg{`,
+			`	${outputTarget !== 'none' ? 'data' : '_'}, err ${
+				outputTarget !== 'none' ? ':' : ''
+			}= contract.Backend.CallContract(context.Background(), ethereum.CallMsg{`,
 			`		From:  opts.From,`,
 			`		To:    &contract.Address,` + (method.stateMutability === 'payable' ? `\n\t\tValue: value,` : ''),
 			`		Data:  input,`,

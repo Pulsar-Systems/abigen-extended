@@ -46,7 +46,7 @@ export const generatorEventHash = (fileContent: string, goinfo: GolangInfo) => {
 			`	result := make([]*${event.structName}, 0, 1)`,
 			`	for _, eventLog := range receipt.Logs {`,
 			`		if bytes.Equal(eventLog.Topics[0].Bytes(), ${event.constName}.Bytes()) {`,
-			`			parsed, err := contract.ParseSwap(*eventLog)`,
+			`			parsed, err := contract.Parse${event.nameCamelCase}(*eventLog)`,
 			`			if err != nil {`,
 			`				return nil, err`,
 			`			}`,
