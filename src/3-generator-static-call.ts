@@ -105,7 +105,15 @@ export const generatorStaticCall = (fileContent: string, goinfo: GolangInfo) => 
 			outputType = mapSolidityToGoType(method.outputs[0], false);
 			outputTarget = 'single';
 
-			defaultReturn = outputType.charAt(0) === '*' ? 'nil' : outputType.includes('int') ? '0' : 'false';
+			defaultReturn = (() => {
+				if (outputType.charAt(0) === '*' || outputType.startsWith('[]')) {
+					return 'nil';
+				} else if (outputType.includes('int')) {
+					return '0';
+				} else {
+					return 'false';
+				}
+			})();
 			defaultReturn += ', err';
 		} else if (method.outputs.length > 1) {
 			outputType = mapSolidityToGoType(

@@ -1,6 +1,6 @@
 {
   "name": "abigen-extended",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "index.js",
   "repository": "git@gitlab.com:pulsar-ai/tools/abigen-extended.git",
   "author": "PulsarAI <dev@pulsar-systems.fi>",
